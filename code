@@ -1,0 +1,135 @@
+from tkinter import *
+from PIL import Image,ImageTk
+from random import randint
+
+#main window
+root=Tk()
+root.title("ROCK PAPER SCISSOR")
+root.configure(background="#FF3E4D")
+
+
+#picture
+rock_img=ImageTk.PhotoImage(Image.open("rockk.jpg"))
+paper_img=ImageTk.PhotoImage(Image.open("paparr.jpg"))
+scissor_img=ImageTk.PhotoImage(Image.open("scissorr.jpg"))
+rock_img_comp=ImageTk.PhotoImage(Image.open("rockk.jpg"))
+paper_img_comp=ImageTk.PhotoImage(Image.open("paparr.jpg"))
+scissor_img_comp=ImageTk.PhotoImage(Image.open("scissorr.jpg"))
+
+
+#insert picture
+user_label=Label(root,image=scissor_img,bg="#FF3E4D")
+comp_label=Label(root,image=scissor_img_comp,bg="#FF3E4D")
+user_label.grid(row=1,column=4)
+comp_label.grid(row=1,column=0)
+
+
+#scores
+playerscore=Label(root,text=0,font=100,bg="#FF3E4D",fg="white")
+compscore=Label(root,text=0,font=100,bg="#FF3E4D",fg="white")
+playerscore.grid(row =1,column=1)
+compscore.grid(row=1,column=3)
+
+#indicator
+user_indicator=Label(root,font=50,text="USER",bg="#FF3E4D",fg="white")
+computer_indicator=Label(root,font=50,text="COMPUTER",bg="#FF3E4D",fg="white")
+user_indicator.grid(row=0,column=3)
+computer_indicator.grid(row=0,column=1)
+
+#messages
+msg=Label(root,font=50,bg="#FF3E4D",fg="white")
+msg.grid(row=3,column=2)
+
+#update messages
+def updatemessage(x):
+    msg['text']=x
+mssg=Label(root,font=50,bg="#FF3E4D",fg="white")
+mssg.grid(row=4,column=2)
+def updatecon(x):
+    mssg['text']=x
+
+#update user score
+def updateUserScore():
+    score=int(playerscore["text"])
+    score+=1
+    playerscore["text"]=str(score)
+
+
+#update  computer score
+def updateCompScore():
+    score=int(compscore["text"])
+    score+=1
+    compscore["text"]=str(score)
+
+
+#check winner
+def checkWin(player,computer):
+    if player==computer :
+        updatemessage("IT IS A TIE")
+        updatecon("BOTH ARE SAME")
+    elif player=="rock":
+        if computer=="paper":
+           updatemessage("YOU LOOSE")
+           updateCompScore()
+           updatecon("PAPER WRAPS ROCK")
+        else:
+           updatemessage("YOU WIN")
+           updateUserScore()
+           updatecon("ROCK DESTROY SCISSOR")
+    elif player=="paper":
+        if computer=="scissor":
+           updatemessage("YOU LOOSE")
+           updateCompScore()
+           updatecon("SCISSOR CUTS PAPER")
+        else:
+           updatemessage("YOU WIN")
+           updateUserScore()
+           updatecon("PAPER WRAPS ROCK ")
+    elif player=="scissor":
+        if computer=="rock":
+           updatemessage("YOU LOOSE")
+           updateCompScore()
+           updatecon("ROCK DESTROY SCISSOR")
+        else:
+           updatemessage("YOU WIN")
+           updateUserScore() 
+           updatecon("SCISSOR CUTS PAPER")
+
+    else:
+        pass       
+
+
+
+#update choices
+choices=["rock","paper","scissor"]
+def updatechoice(x):
+
+
+#for computer
+    compChoice= choices[randint(0,2)]
+    if compChoice=="rock":
+       comp_label.configure(image=rock_img_comp)
+    elif compChoice=="paper":
+       comp_label.configure(image=paper_img_comp)
+    else:
+       comp_label.configure(image=scissor_img_comp)
+
+
+
+#for user
+    if x=="rock":
+        user_label.configure(image=rock_img)
+    elif x=="paper":
+        user_label.configure(image=paper_img)
+    else:
+        user_label.configure(image=scissor_img)
+    
+    checkWin(x,compChoice)
+
+#buttons
+rock=Button(root,width=20,height=2,text="ROCK",
+bg="#9b59b6",fg="white",command=lambda:updatechoice("rock")).grid(row=2,column=1)
+paper=Button(root,width=20,height=2,text="PAPER",
+bg="#FAD02E",fg="white",command=lambda:updatechoice("paper")).grid(row=2,column=2)
+scissor=Button(root,width=20,height=2,text="SCISSOR",
+bg="darkolivegreen4",fg="white",command=lambda:updatechoice("scissor")).grid(row=2,column=3)
